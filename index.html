@@ -110,6 +110,7 @@
             </div>
         </section>
 
+       
         <section id="about" class="container mx-auto px-4 py-16">
             <h2 class="text-3xl font-semibold text-center mb-12 text-white">About Us</h2>
             <div class="bg-gray-800 rounded-lg shadow-md p-6 md:p-10 flex flex-col md:flex-row items-center gap-8">
@@ -133,27 +134,28 @@
                             Feel free to reach out to us for any inquiries, product information, or custom solutions.
                         </p>
                         <ul class="text-gray-400">
-                            <li class="mb-2"><strong>Address:</strong> First Floor, Raskar Complex, 15/8, near Rahul Tools, Anand Nagar, Shantinagar, Bhosari, Pune, Pimpri-Chinchwad, Maharashtra 411026</li>
-                            <li class="mb-2"><strong>Phone:</strong> +91 9730659560</li>
-                            <li class="mb-2"><strong>Email:</strong> limragauges@gmail.com</li>
+                            <li class="mb-2"><strong>Address:</strong> 123 Industrial Area, New Delhi, India</li>
+                            <li class="mb-2"><strong>Phone:</strong> +91 1234567890</li>
+                            <li class="mb-2"><strong>Email:</strong> info@limragauges.com</li>
                         </ul>
                     </div>
                     <div>
                         <h3 class="text-xl font-semibold text-white mb-4">Send us a Message</h3>
-                        <form>
+                        <form id="contact-form"  method="POST">
                             <div class="mb-4">
-                                <input type="text" placeholder="Your Name" class="w-full px-4 py-2 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <input type="text" name="name" placeholder="Your Name" required class="w-full px-4 py-2 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
                             </div>
                             <div class="mb-4">
-                                <input type="email" placeholder="Your Email" class="w-full px-4 py-2 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <input type="email" name="email" placeholder="Your Email" required class="w-full px-4 py-2 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
                             </div>
                             <div class="mb-4">
-                                <textarea placeholder="Your Message" class="w-full px-4 py-2 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                                <textarea name="message" placeholder="Your Message" required class="w-full px-4 py-2 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
                             </div>
                             <button type="submit" class="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white font-semibold py-3 px-6 rounded-full transition duration-300 shadow-lg hover:shadow-xl">
                                 Send Message
                             </button>
                         </form>
+                         <div id="form-submission-message" class="mt-4 text-yellow-400 font-semibold text-center hidden"></div>
                     </div>
                 </div>
             </div>
@@ -175,6 +177,8 @@
         const mobileMenuLinks = mobileMenu.querySelectorAll("a");
         const navLinks = document.querySelectorAll('header nav a');
         const sections = document.querySelectorAll('section');
+        const contactForm = document.getElementById('contact-form');
+        const formSubmissionMessage = document.getElementById('form-submission-message');
 
         function toggleMobileMenu() {
             mobileMenu.classList.toggle("hidden");
@@ -223,6 +227,36 @@
                 });
             });
         });
+
+        contactForm.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+
+
+            formSubmissionMessage.textContent = 'Sending message...';
+            formSubmissionMessage.classList.remove('hidden');
+
+            // Use a service like EmailJS (https://www.emailjs.com/)
+            emailjs.sendForm('service_igsbnxq', 'template_tkh0ito', contactForm)
+                .then(function(response) {
+                    console.log('SUCCESS!', response.status, response.text);
+                    formSubmissionMessage.textContent = 'Message sent successfully!';
+                    formSubmissionMessage.classList.remove('text-yellow-400');
+                    formSubmissionMessage.classList.add('text-green-500');
+                    contactForm.reset();
+                }, function(error) {
+                    console.log('FAILED...', error);
+                    formSubmissionMessage.textContent = 'Failed to send message. Please try again.';
+                    formSubmissionMessage.classList.remove('text-green-500');
+                    formSubmissionMessage.classList.add('text-yellow-400');
+                });
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script>
+        (function() {
+            emailjs.init('lZXUlfmrgvqbVJeD6'); //replace with your EmailJS user ID
+        })();
     </script>
 </body>
 </html>
